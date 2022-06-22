@@ -101,18 +101,20 @@ export class ParsedWsdl {
     wsdlPath: string;
 
     definitions: Array<Definition> = [];
+    xmlns: { [key: string]: string };
     ports: Array<Port> = [];
     services: Array<Service> = [];
 
     private _options: Options;
     private _warns: string[];
 
-    constructor(options: Partial<Options>) {
+    constructor(options: Partial<Options>, xmlns: { [key: string]: string }) {
         this._options = {
             ...defaultOptions,
             ...options,
         };
         this._warns = [];
+        this.xmlns = xmlns;
     }
 
     /** Find already parsed definition by it's name */

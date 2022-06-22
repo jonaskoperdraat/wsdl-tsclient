@@ -149,13 +149,32 @@ function parseDefinition(
                     }
                 } else {
                     if (typeof type === "string") {
+                        let tsType: string = "string";
+
+                        const primitiveTypes: { [key: string]: string } = {
+                            string: 'string',
+                            boolean: 'boolean',
+                            integer: 'number',
+                            decimal: 'number',
+                            float: 'number',
+                            double: 'number'
+                        }
+
+                        const parts = type.split(":")
+                        if (parts.length == 2) {
+                            const [ns, value] = parts;
+                            if (parsedWsdl.xmlns[ns] === "http://www.w3.org/2001/XMLSchema") {
+                                tsType = primitiveTypes[value] || primitiveTypes.string
+                            }
+                        }
+
                         // primitive type
                         definition.properties.push({
                             kind: "PRIMITIVE",
                             name: propName,
                             sourceName: propName,
                             description: type,
-                            type: "string",
+                            type: tsType,
                             isArray: false,
                         });
                     } else if (type instanceof ComplexTypeElement) {
@@ -239,7 +258,7 @@ export async function parseWsdl(wsdlPath: string, options: Partial<ParserOptions
                     return reject(new Error("WSDL is undefined"));
                 }
 
-                const parsedWsdl = new ParsedWsdl({ maxStack: options.maxRecursiveDefinitionName });
+                const parsedWsdl = new ParsedWsdl({ maxStack: options.maxRecursiveDefinitionName }, wsdl.definitions.xmlns);
                 const filename = path.basename(wsdlPath);
                 parsedWsdl.name = changeCase(stripExtension(filename), {
                     pascalCase: true,
