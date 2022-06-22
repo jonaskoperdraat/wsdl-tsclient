@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions
+        xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+        xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:tns="https://www.primitives.com/"
+        targetNamespace="https://www.primitives.com/">
+  <wsdl:types>
+    <xs:schema elementFormDefault="qualified" targetNamespace="https://www.primitives.com/">
+      <xs:element name="Request" type="tns:RequestType" />
+      <xs:element name="Response" type="xs:string" />
+      <xs:complexType name="RequestType">
+        <xs:sequence>
+          <xs:element name="stringElement" type="xs:string" />
+          <xs:element name="integerElement" type="xs:integer" />
+          <xs:element name="booleanElement" type="xs:boolean" />
+          <xs:element name="decimalElement" type="xs:decimal" />
+          <xs:element name="floatElement" type="xs:float" />
+          <xs:element name="doubleElement" type="xs:double" />
+<!--          <xs:element name="durationElement" type="xs:duration" />-->
+<!--          <xs:element name="dateTimeElement" type="xs:dateTime" />-->
+<!--          <xs:element name="timeElement" type="xs:time" />-->
+<!--          <xs:element name="dateElement" type="xs:date" />-->
+<!--          <xs:element name="gYearMonthElement" type="xs:gYearMonth" />-->
+<!--          <xs:element name="gYearElement" type="xs:gYear" />-->
+<!--          <xs:element name="gMonthDayElement" type="xs:gMonthDay" />-->
+<!--          <xs:element name="gDayElement" type="xs:gDay" />-->
+<!--          <xs:element name="gMonthElement" type="xs:gMonth" />-->
+<!--          <xs:element name="hexBinaryElement" type="xs:hexBinary" />-->
+<!--          <xs:element name="base64BinaryElement" type="xs:base64Binary" />-->
+<!--          <xs:element name="anyURIElement" type="xs:anyURI" />-->
+<!--          <xs:element name="QNameElement" type="xs:QName" />-->
+<!--          <xs:element name="NOTATIONElement" type="xs:NOTATION" />-->
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+  </wsdl:types>
+
+  <wsdl:message name="Request">
+    <wsdl:part name="body" element="tns:Request"/>
+  </wsdl:message>
+
+  <wsdl:message name="Response">
+    <wsdl:part name="body" element="tns:Response"/>
+  </wsdl:message>
+
+  <wsdl:portType name="Port">
+    <wsdl:operation name="DefaultOperation">
+      <wsdl:input message="tns:Request"/>
+      <wsdl:output message="tns:Response"/>
+    </wsdl:operation>
+  </wsdl:portType>
+
+  <wsdl:binding name="Binding" type="tns:Port">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="DefaultOperation">
+      <soap:operation soapAction="https://www.primitives.com/Operation" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+
+  <wsdl:service name="Service">
+    <wsdl:port name="Port" binding="tns:Binding">
+      <soap:address location="https://www.primitives.com/"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
+
